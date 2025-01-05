@@ -17,12 +17,12 @@ class BinarySearchTree {
   }
 
   add(data) {
-    console.log(data);
-    if (data === null || data === undefined) {
-      return this.rootMyHead;
-    } else if (typeof data !== "number") {
-      return this.rootMyHead;
-    }
+    // console.log(data);
+    // if (data === null || data === undefined) {
+    //   return this.rootMyHead;
+    // } else if (typeof data !== "number") {
+    //   return this.rootMyHead;
+    // }
     if (!this.rootMyHead) {
       this.rootMyHead = new Node(data);
       return this.rootMyHead;
@@ -32,52 +32,121 @@ class BinarySearchTree {
   }
 
   addedNote(node, data) {
-    if (data < node.value) {
+    if (data < node.data) {
       // this.node = node.left;
       if (!node.left) {
         node.left = new Node(data);
-        // return node;
+        return node;
       } else {
         this.addedNote(node.left, data);
         // node.left = this.addedNote(node.left, data);
-        // return node;
+        return node;
       }
-    } else if (data > node.value) {
+    } else if (data > node.data) {
       if (!node.right) {
         node.right = new Node(data);
-        // return node;
+        return node;
       } else {
         this.addedNote(node.right, data);
         // node.right = this.addedNote(node.right, data);
-        // return node;
+        return node;
       }
     }
     return node;
   }
 
-  has(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  has(data) {
+    // if (data === null || data === undefined) {
+    //   return false;
+    // }
+    return this.find(data) ? true : false;
   }
 
-  find(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  find(data) {
+    const sarder = this.rootMyHead;
+    return findNode(sarder, data);
+    function findNode(node, findValue) {
+      if (!node) {
+        return null;
+      }
+      // else {
+      //   return node;
+      // }
+      if (node.data === findValue) {
+        return node;
+      }
+      if (findValue < node.data) {
+        return findNode(node.left, findValue);
+      } else {
+        return findNode(node.right, findValue);
+      }
+    }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  remove(data) {
+    return this.removeNode(this.rootMyHead, data);
+  }
+
+  removeNode(node, value) {
+    if (!node) {
+      return null;
+    }
+    if (value < node.data) {
+      node.left = this.removeNode(node.left, value);
+      return node;
+    } else if (value > node.data) {
+      node.right = this.removeNode(node.right, value);
+      return node;
+    } else {
+      if (!node.left && !node.right) {
+        return null;
+      }
+      if (!node.left) {
+        node = node.right;
+        return node;
+      }
+      if (!node.right) {
+        node = node.left;
+        return node;
+      }
+      // const minNode = this.min(node.right);
+      // const minNode = this.findMin(node.right);
+      // node.data = minNode.data;
+      // node.right = this.removeNode(node.right, minNode.data);
+
+      const maxNode = this.findMax(node.left);
+      node.data = maxNode.data;
+      node.left = this.removeNode(node.left, maxNode.data);
+      return node;
+    }
+  }
+
+  findMin(node) {
+    let minNode = node;
+    while (minNode.left) {
+      minNode = minNode.left;
+    }
+    return minNode;
+  }
+
+  findMax(node) {
+    let maxNode = node;
+    while (maxNode.right) {
+      maxNode = maxNode.right;
+    }
+    return maxNode;
   }
 
   min() {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+    return this.findMin(this.rootMyHead).data;
   }
 
   max() {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+    let msxCheck = this.rootMyHead;
+    while (msxCheck.right) {
+      msxCheck = msxCheck.right;
+    }
+    return msxCheck.data;
   }
 }
 
